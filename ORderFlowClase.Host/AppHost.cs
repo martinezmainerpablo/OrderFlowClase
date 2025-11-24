@@ -10,10 +10,18 @@ var postgres = builder
 
 var db =  postgres.AddDatabase("identity");
 
-builder.AddProject<Projects.OrderFlowClase_API_Identity>("orderflowclase-api-identity")
+var identity_1 = builder.AddProject<Projects.OrderFlowClase_API_Identity>("orderflowclase-api-identity")
     .WaitFor(db)
     .WithReference(db);
 
-builder.AddProject<Projects.OrderFlowClase_ApiGateway>("orderflowclase-apigateway");
+var identity_2 = builder.AddProject<Projects.OrderFlowClase_API_Identity>("orderflowclase-api-identity2")
+    .WaitFor(db)
+    .WithReference(db);
+
+builder.AddProject<Projects.OrderFlowClase_ApiGateway>("orderflowclase-apigateway")
+    .WithReference(identity_1)
+    .WithReference(identity_2)
+    .WaitFor(identity_1)
+    .WaitFor(identity_2);
 
 builder.Build().Run();
