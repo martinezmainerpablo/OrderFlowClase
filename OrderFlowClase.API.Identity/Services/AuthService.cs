@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using OrderFlowClase.API.Identity.Dto.Auth;
 using OrderFlowClase.Shared;
+using OrderFlowClase.Shared.Events;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -97,7 +98,7 @@ namespace OrderFlowClase.API.Identity.Services
 
             if (user != null)
             {
-                await _publishEndpoint.Publish(new UserCreatedEvents(user.Id, user.Email!));
+                await _publishEndpoint.Publish(new UserCreatedEvent(user.Id, user.Email!));
             }
 
             if (result != null) return true;
